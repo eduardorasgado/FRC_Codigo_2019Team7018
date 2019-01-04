@@ -1,6 +1,13 @@
 import cv2
 import numpy as np
 
+class SquareDetector:
+    def __init__(self):
+        pass
+
+    def detect(self, countour):
+        perimeter = cv2.arcLength
+
 JUST_ONCE = 0
 def resizingImage(img, f_height, f_width):
     #cambiando el tamano de la imagen a la mitad
@@ -49,6 +56,9 @@ def processingImage(frame, width, height):
     kernel = np.ones((4,4), np.uint8)
     threshImg = cv2.morphologyEx(threshImg,  cv2.MORPH_OPEN, kernel)
 
+    # detectando contornos
+    img, contours, hierarchy = cv2.findContours(threshImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(frame, contours, -1, (255, 255, 255), -1)
     
     return gray, masked, threshImg
 
