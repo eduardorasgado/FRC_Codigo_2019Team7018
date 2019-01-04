@@ -1,12 +1,26 @@
 import cv2
 import numpy as np
 
-class SquareDetector:
+class RectangleDetector:
     def __init__(self):
         pass
 
-    def detect(self, countour):
-        perimeter = cv2.arcLength
+    def detect(self, contour):
+        # calculando el perimetro y creando un poligono a partir de el 
+        # contorno
+        perimeter = cv2.arcLength(contour, True)
+        approx = cv2.approxPolyDP(contour, 0.04 * perimeter, True)
+
+        # detectando cuadrado o rectangulo
+        if len(approx) == 4:
+            (x, y, w, h) = cv2.boundingRect(approx)
+            arco = w / float(h)
+            # cerciornadonos de que se trata de un rectangulo
+            ## que su arco se encuentre entre estas medidas
+            if arco <= 10.05 and arco >= 2.0:
+                return True
+        return False
+                
 
 JUST_ONCE = 0
 def resizingImage(img, f_height, f_width):
@@ -58,7 +72,23 @@ def processingImage(frame, width, height):
 
     # detectando contornos
     img, contours, hierarchy = cv2.findContours(threshImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(frame, contours, -1, (255, 255, 255), -1)
+    #img, contours, hierarchy = cv2.findContours(threshImg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    #cv2.drawContours(frame, contours, -1, (255, 255, 255), -1)
+
+    # de momento aqui
+    detector = RectangleDetector()
+    
+    # detectando si se trata de un rectangulo
+    for c in contours:
+        #detectando el centro del contorno
+        M = cv2.moments(c)
+        cX = int(M["m10"] / M["m00"])
+        cY = int(M["m01"] / M["m00"])
+        # utilizando el detector para el contorno actual
+        isRectangle = detector.detect(c)
+        # si se trata de un rectangulo entonces lo utilizamos
+        if isRectangle:
+            cv2.drawContours(frame, [c], -1, (255, 255, 255), -1)        
     
     return gray, masked, threshImg
 
