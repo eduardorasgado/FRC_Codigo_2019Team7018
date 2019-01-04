@@ -1,6 +1,13 @@
 import cv2
 import numpy as np
 
+"""
+ALGORITMO PARA DETECCION DE DIANAS RECTANGULARES EN
+LA COMPETENCIA FRC
+El video que se evalua se encuentra disponible en:
+https://www.youtube.com/watch?v=8zD2joSEbGg
+de donde se toma prestado
+"""
 class RectangleDetector:
     def __init__(self):
         pass
@@ -94,6 +101,9 @@ def processingImage(frame, width, height):
             cv2.drawContours(frame, [c], -1, (0, 255, 0), -1)
             #dibujando los centros de cada rectangulo detectado
             cv2.circle(frame, (cX, cY), 2, (0, 0, 0), -1)
+            # escribiendo el centro
+            cv2.putText(frame, "centro", (cX, cY),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
             
     
     return gray, masked, threshImg
