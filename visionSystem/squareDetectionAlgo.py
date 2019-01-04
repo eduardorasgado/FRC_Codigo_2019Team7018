@@ -17,8 +17,9 @@ class RectangleDetector:
             arco = w / float(h)
             # cerciornadonos de que se trata de un rectangulo
             ## que su arco se encuentre entre estas medidas
-            if arco <= 10.05 and arco >= 2.0:
-                return True
+            if arco <= 18.05 and arco >= 2.0:
+                if h > 10.0 and w > 10.0:
+                    return True
         return False
                 
 
@@ -84,11 +85,16 @@ def processingImage(frame, width, height):
         M = cv2.moments(c)
         cX = int(M["m10"] / M["m00"])
         cY = int(M["m01"] / M["m00"])
+        
         # utilizando el detector para el contorno actual
         isRectangle = detector.detect(c)
         # si se trata de un rectangulo entonces lo utilizamos
         if isRectangle:
-            cv2.drawContours(frame, [c], -1, (255, 255, 255), -1)        
+            # dibujando el rectangulo
+            cv2.drawContours(frame, [c], -1, (0, 255, 0), -1)
+            #dibujando los centros de cada rectangulo detectado
+            cv2.circle(frame, (cX, cY), 2, (0, 0, 0), -1)
+            
     
     return gray, masked, threshImg
 
