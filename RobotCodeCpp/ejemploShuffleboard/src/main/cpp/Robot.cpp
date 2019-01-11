@@ -4,24 +4,38 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-#pragma once
-
 
 #include <frc/Joystick.h>
 #include <frc/TimedRobot.h>
 #include <frc/Timer.h>
 #include <SmartDashboard.h>
 
+/**
+ * This sample program provides an example for ShuffleBoard, an alternative
+ * to SmartDashboard for displaying values and properties of different robot
+ * parts.
+ *
+ * ShuffleBoard can use pre-programmed widgets to display various values, such
+ * as Boolean Boxes, Sliders, Graphs, and more. In addition, they can display
+ * things in various Tabs.
+ *
+ * For more information on how to create personal layouts and more in
+ * ShuffleBoard, feel free to reference the official FIRST WPILib documentation
+ * online.
+ */
 class Robot : public frc::TimedRobot {
  public:
-  Robot(){
+ Robot(){
+   m_timer.Start();
+ }
+  void RobotInit() override {
+    // Add a widget titled 'Max Speed' with a number slider.
+    m_timer.Reset();
     m_timer.Start();
   }
 
   void AutonomousInit() override {
     // Update the Max Output for the drivetrain.
-    m_timer.Reset();
-    m_timer.Start();
   }
   void AutonomousPeriodic() override{}
 
@@ -39,3 +53,6 @@ class Robot : public frc::TimedRobot {
   frc::Timer m_timer;
 };
 
+#ifndef RUNNING_FRC_TESTS
+int main() { return frc::StartRobot<Robot>(); }
+#endif
