@@ -5,6 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                        EOLOTICS 7018                                       */
+/*----------------------------------------------------------------------------*/
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -20,6 +23,8 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 // controlar 2 motores izquierdos y dos derecho
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+// Libreria para los victor spx
+import edu.wpi.first.wpilibj.VictorSP;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,6 +35,9 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
  */
 
  public class Robot extends TimedRobot {
+   // Stop
+   private final double STOP_MOTOR = 0.0;
+
   // el joystick esta en el puerto cero(USB)
   // solo leemos las pocisiones x y "y" del mando
   private final Joystick m_stick = new Joystick(0);
@@ -41,8 +49,16 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
   private final int SPARK_PORT_LEFT_FRONT = 1;
 
   private final int SPARK_PORT_RIGHT_REAR = 2;
-  private final int SPARK_PORT_RIGHT_FRONT = 3;
+  private final int SPARK_PORT_RIGHT_FRONT = 6;
+
+  // Puertos para los victor del ball Launcher
+  private final int VICTOR_SP1_PORT = 4;
+  private final int VICTOR_SP2_PORT = 5;
   
+  //Puerto para los voctor del ball Sucker
+  private final int MECANNO_MOTOR_PORT = 7;
+  private final int ARM_MOTOR_PORT = 8;
+
   // Creando los motores para el robot diferencial
   private Spark motorRearRight;  // (LF)(LR)----(*RR)(RF)
   private Spark motorFrontRight; // (LF)(LR)----(RR)(*RF)
@@ -52,6 +68,15 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
   // creando el sistema diferencial para el robot
   private DifferentialDrive mecanismoPrincipal;
+
+  // los dos motores del Ball Launcher
+  private VictorSP MLauncher1;
+  private VictorSP MLauncher2;
+  
+  // los dos motores del Ball Sucker
+  private VictorSP MecSuckerMotor;
+  private VictorSP ArmSuckerMotor;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -71,6 +96,15 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
     SpeedControllerGroup m_left = new SpeedControllerGroup(motorFrontLeft, motorRearLeft);
     // controlador principal para el movimiento del robot
     mecanismoPrincipal = new DifferentialDrive(m_left, m_right);
+
+    // Inicializando subsistemas
+    // 1) Launcher
+    MLauncher1 = new VictorSP(VICTOR_SP1_PORT);
+    MLauncher2 = new VictorSP(VICTOR_SP2_PORT);
+
+    // 2) Sucker
+    MecSuckerMotor = new VictorSP(MECANNO_MOTOR_PORT);
+    ArmSuckerMotor = new VictorSP(ARM_MOTOR_PORT);
   }
 
   /**
@@ -107,7 +141,47 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
       SmartDashboard.putNumber("Joystick X", m_stick.getX());
       SmartDashboard.putNumber("Joytick Y", m_stick.getY());
       // moviendo todo el tren de manejo
-      mecanismoPrincipal.arcadeDrive(m_stick.getY(), m_stick.getX());   
+      mecanismoPrincipal.arcadeDrive(-m_stick.getY(), m_stick.getX());
+
+      //boton 1: launcher: activacion
+      if(m_stick.getRawButtonPressed(1))
+      {
+        // si el boton 0 es presionado hacer esto
+        // el motor es encendido a maxima potencia
+        SmartDashboard.putBoolean("Button Launcher Pressed", true);
+        SmartDashboard.putBoolean("Button Launcher Released", false);
+        // encendiendo los motores
+        MLauncher1.set(1.0);
+        MLauncher2.set(-1.0);
+      }
+      //Boton 1: launcher, release
+      if(m_stick.getRawButtonReleased(1))
+      {
+        // si el boton 0 es librerado hacer esto otro
+        // el motor para lentamente
+        SmartDashboard.putBoolean("Button Launcher Released", true);
+        SmartDashboard.putBoolean("Button Launcher Pressed", false);
+        // desactivamos el launcher
+        MLauncher1.set(STOP_MOTOR);
+        MLauncher2.set(STOP_MOTOR);
+      }
+      // Boton2: ball Sucker-> encendiendo
+      if(m_stick.getRawButtonPressed(2))
+      {
+        SmartDashboard.putBoolean("Button Sucker Pressed", true);
+        SmartDashboard.putBoolean("Button Sucker Release", false);
+        // enciendo el subsistema para sustraer el cargo
+        MecSuckerMotor.set(1.0);
+        ArmSuckerMotor.set(0.25);
+      }
+      if(m_stick.getRawButtonReleased(2))
+      {
+        SmartDashboard.putBoolean("Button Sucker Release", true);
+        SmartDashboard.putBoolean("Button Sucker Pressed", false);
+        // Apagando el subsistema para sustraer el cargo
+        MecSuckerMotor.set(STOP_MOTOR);
+        ArmSuckerMotor.set(STOP_MOTOR);
+      }
     }
   }
 
