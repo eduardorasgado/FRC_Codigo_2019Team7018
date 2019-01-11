@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.Spark;
 // permite crear un sistema diferencial para controlar los dos motores
 // que  le dan la direccion al robot
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+// controlar 2 motores izquierdos y dos derecho
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,20 +29,26 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * directory.
  */
 
-//smuuuuuurrfffff
-
  public class Robot extends TimedRobot {
-  // puertos para el spark
-  private final int PUERTO_SPARK_LEFT = 0;
-  private final int PUERTO_SPARK_RIGHT = 1;
-
+  // el joystick esta en el puerto cero(USB)
+  // solo leemos las pocisiones x y "y" del mando
   private final Joystick m_stick = new Joystick(0);
-  
+  // controla los tiempos de los subsistemas
   private final Timer m_timer = new Timer();
+
+  // puertos para el spark
+  private final int SPARK_PORT_LEFT_REAR = 0;
+  private final int SPARK_PORT_LEFT_FRONT = 1;
+
+  private final int SPARK_PORT_RIGHT_REAR = 2;
+  private final int SPARK_PORT_RIGHT_FRONT = 3;
   
   // Creando los motores para el robot diferencial
-  private Spark motorRight;
-  private Spark motorLeft;
+  private Spark motorRearRight;  // (LF)(LR)----(*RR)(RF)
+  private Spark motorFrontRight; // (LF)(LR)----(RR)(*RF)
+
+  private Spark motorRearLeft; // (LF)(*LR)----(RR)(RF)
+  private Spark motorFrontLeft; // (*LF)(LR)----(RR)(RF)
 
   // creando el sistema diferencial para el robot
   private DifferentialDrive mecanismoPrincipal;
@@ -50,10 +58,19 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
    */
   @Override
   public void robotInit() {
-    motorRight = new Spark(PUERTO_SPARK_RIGHT);
-    motorLeft = new Spark(PUERTO_SPARK_LEFT);
+    // definiendo los controladores de los motores derechos
+    motorRearRight = new Spark(SPARK_PORT_RIGHT_REAR);
+    motorFrontRight = new Spark(SPARK_PORT_RIGHT_FRONT);
 
-    mecanismoPrincipal = new DifferentialDrive( motorLeft, motorRight);
+    // definiendo los controladores de los motores izquierdos
+    motorRearLeft = new Spark(SPARK_PORT_LEFT_REAR);
+    motorFrontLeft = new Spark(SPARK_PORT_LEFT_FRONT);
+
+    // agrupando los motores
+    SpeedControllerGroup m_right = new SpeedControllerGroup(motorFrontRight, motorRearRight);
+    SpeedControllerGroup m_left = new SpeedControllerGroup(motorFrontLeft, motorRearLeft);
+    // controlador principal para el movimiento del robot
+    mecanismoPrincipal = new DifferentialDrive(m_left, m_right);
   }
 
   /**
