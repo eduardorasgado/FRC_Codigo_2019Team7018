@@ -37,8 +37,11 @@ import edu.wpi.first.wpilibj.VictorSP;
  public class Robot extends TimedRobot {
    // Stop
    private final double STOP_MOTOR = 0.0;
-
-  // el joystick esta en el puerto cero(USB)
+   // Maximo Poder Del Motor
+   private final double MAX_POWER_MOTOR = 1.0;
+   //Maximo Poder Del Motor Negativo
+   private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
+   // el joystick esta en el puerto cero(USB)
   // solo leemos las pocisiones x y "y" del mando
   private final Joystick m_stick = new Joystick(0);
   // controla los tiempos de los subsistemas
@@ -151,8 +154,8 @@ import edu.wpi.first.wpilibj.VictorSP;
         SmartDashboard.putBoolean("Button Launcher Pressed", true);
         SmartDashboard.putBoolean("Button Launcher Released", false);
         // encendiendo los motores
-        MLauncher1.set(1.0);
-        MLauncher2.set(-1.0);
+        MLauncher1.set(MAX_POWER_MOTOR);
+        MLauncher2.set(MAX_POWER_MOTOR_NEGATIVE);
       }
       //Boton 1: launcher, release
       if(m_stick.getRawButtonReleased(1))
@@ -171,7 +174,7 @@ import edu.wpi.first.wpilibj.VictorSP;
         SmartDashboard.putBoolean("Button Sucker Pressed", true);
         SmartDashboard.putBoolean("Button Sucker Release", false);
         // enciendo el subsistema para sustraer el cargo
-        MecSuckerMotor.set(1.0);
+        MecSuckerMotor.set(MAX_POWER_MOTOR);
         ArmSuckerMotor.set(0.25);
       }
       if(m_stick.getRawButtonReleased(2))
