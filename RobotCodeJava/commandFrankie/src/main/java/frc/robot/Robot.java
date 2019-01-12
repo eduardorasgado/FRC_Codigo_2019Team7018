@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DifferentialDriveTrain;
+import frc.robot.subsystems.BallSucker;
 
 // Libreria para los victor spx
 import edu.wpi.first.wpilibj.VictorSP;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   private final double STOP_MOTOR = 0.0;
   // Maximo Poder Del Motor
   private final double MAX_POWER_MOTOR = 1.0;
+  private final double MIN_SUCKER_MOTOR = 0.25;
   //Maximo Poder Del Motor Negativo
   private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
   // el joystick esta en el puerto cero(USB)
@@ -56,21 +58,16 @@ public class Robot extends TimedRobot {
   // Puertos para los victor del ball Launcher
   private final int VICTOR_SP1_PORT = 4;
   private final int VICTOR_SP2_PORT = 5;
-  
-  //Puerto para los voctor del ball Sucker
-  private final int MECANNO_MOTOR_PORT = 7;
-  private final int ARM_MOTOR_PORT = 8;
 
   // sistema principal
   private DifferentialDriveTrain mainDrive;
 
+  // El sistema para la sustraccion del cargo
+  private BallSucker suckerSystem;
+
   // los dos motores del Ball Launcher
   private VictorSP MLauncher1;
   private VictorSP MLauncher2;
-  
-  // los dos motores del Ball Sucker
-  private VictorSP MecSuckerMotor;
-  private VictorSP ArmSuckerMotor;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -85,15 +82,13 @@ public class Robot extends TimedRobot {
 
     // el sistema de motores principal
     mainDrive = new DifferentialDriveTrain();
+    // definimos el sistema sustractor
+    suckerSystem = new BallSucker();
 
     // Inicializando subsistemas
     // 1) Launcher
     MLauncher1 = new VictorSP(VICTOR_SP1_PORT);
     MLauncher2 = new VictorSP(VICTOR_SP2_PORT);
-
-    // 2) Sucker
-    MecSuckerMotor = new VictorSP(MECANNO_MOTOR_PORT);
-    ArmSuckerMotor = new VictorSP(ARM_MOTOR_PORT);
   }
 
   /**
@@ -212,16 +207,15 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Button Sucker Pressed", true);
         SmartDashboard.putBoolean("Button Sucker Release", false);
         // enciendo el subsistema para sustraer el cargo
-        MecSuckerMotor.set(MAX_POWER_MOTOR);
-        ArmSuckerMotor.set(0.25);
+        // Ball Sucker
+        suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
       }
       if(m_stick.getRawButtonReleased(2))
       {
         SmartDashboard.putBoolean("Button Sucker Release", true);
         SmartDashboard.putBoolean("Button Sucker Pressed", false);
         // Apagando el subsistema para sustraer el cargo
-        MecSuckerMotor.set(STOP_MOTOR);
-        ArmSuckerMotor.set(STOP_MOTOR);
+        suckerSystem.DriveRelease();
       }
     }
   }
