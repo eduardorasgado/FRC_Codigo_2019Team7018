@@ -167,36 +167,24 @@ public class Robot extends TimedRobot {
       //boton 1: launcher: activacion
       if(m_oi.LauncherButtonPressed())
       {
-        // si el boton 0 es presionado hacer esto
-        // el motor es encendido a maxima potencia
-        SmartDashboard.putBoolean("Button Launcher Pressed", true);
-        SmartDashboard.putBoolean("Button Launcher Released", false);
         // encendiendo los motores
         launcherSystem.DrivePressed(MAX_POWER_MOTOR, MAX_POWER_MOTOR_NEGATIVE);
       }
       //Boton 1: launcher, release
       if(m_oi.LauncherButtonRelease())
       {
-        // si el boton 0 es librerado hacer esto otro
-        // el motor para lentamente
-        SmartDashboard.putBoolean("Button Launcher Released", true);
-        SmartDashboard.putBoolean("Button Launcher Pressed", false);
         // desactivamos el launcher
         launcherSystem.DriveRelease();
       }
       // Boton2: ball Sucker-> encendiendo
       if(m_oi.SuckerButtonPressed())
       {
-        SmartDashboard.putBoolean("Button Sucker Pressed", true);
-        SmartDashboard.putBoolean("Button Sucker Release", false);
         // enciendo el subsistema para sustraer el cargo
         // Ball Sucker
         suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
       }
       if(m_oi.SuckerButtonRelease())
       {
-        SmartDashboard.putBoolean("Button Sucker Release", true);
-        SmartDashboard.putBoolean("Button Sucker Pressed", false);
         // Apagando el subsistema para sustraer el cargo
         suckerSystem.DriveRelease();
       }

@@ -63,25 +63,34 @@ public class OI {
 
   public boolean LauncherButtonPressed()
   {
-    //
+    // si el boton 0 es presionado hacer esto
+    // el motor es encendido a maxima potencia
+    SmartDashboard.putBoolean("Button Launcher Pressed", true);
+    SmartDashboard.putBoolean("Button Launcher Released", false);
     return m_stick.getRawButtonPressed(1);
   }
 
   public boolean LauncherButtonRelease()
   {
     //
+    // si el boton 0 es librerado hacer esto otro
+    // el motor para lentamente
+    SmartDashboard.putBoolean("Button Launcher Released", true);
+    SmartDashboard.putBoolean("Button Launcher Pressed", false);
     return m_stick.getRawButtonReleased(1);
   }
 
   public boolean SuckerButtonPressed()
   {
-    //
+    SmartDashboard.putBoolean("Button Sucker Pressed", true);
+    SmartDashboard.putBoolean("Button Sucker Release", false);
     return m_stick.getRawButtonPressed(2);
   }
 
   public boolean SuckerButtonRelease()
   {
-    //
+    SmartDashboard.putBoolean("Button Sucker Release", true);
+    SmartDashboard.putBoolean("Button Sucker Pressed", false);
     return m_stick.getRawButtonReleased(2);
   }
 }
