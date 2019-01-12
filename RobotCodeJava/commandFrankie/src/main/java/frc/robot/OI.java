@@ -61,6 +61,12 @@ public class OI {
     SmartDashboard.putNumber("Joytick Y", m_stick.getY());
   }
 
+  public double getSliderData()
+  {
+    // conseguir datos del slider
+    return m_stick.getRawAxis(3);
+  }
+
   public boolean LauncherButtonPressed()
   {
     // si el boton 0 es presionado hacer esto

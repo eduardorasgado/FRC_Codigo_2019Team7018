@@ -160,7 +160,12 @@ public class Robot extends TimedRobot {
     {
       // enviar valores x (y) y a la smart dashboard
       m_oi.sendPositionToDBoard();
+      // los datos de el slider
+      //SmartDashboard.putNumber("SLIDER: ", m_oi.getSliderData());
       
+      // obteniendo la velocidad del launcher con el slider
+      double sliderData = launcherSystem.getSpeed(m_oi.getSliderData());
+
       // desde el subsistema de drive
       mainDrive.Drive(m_oi.m_stick);
 
@@ -168,7 +173,7 @@ public class Robot extends TimedRobot {
       if(m_oi.LauncherButtonPressed())
       {
         // encendiendo los motores
-        launcherSystem.DrivePressed(MAX_POWER_MOTOR, MAX_POWER_MOTOR_NEGATIVE);
+        launcherSystem.DrivePressed(sliderData, -sliderData);
       }
       //Boton 1: launcher, release
       if(m_oi.LauncherButtonRelease())

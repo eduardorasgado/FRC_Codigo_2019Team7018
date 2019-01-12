@@ -45,4 +45,22 @@ public class BallLauncher extends Subsystem {
     MLauncher1.set(STOP_MOTOR);
     MLauncher2.set(STOP_MOTOR);
   }
+
+  public double getSpeed(double sliderData)
+  {
+    // los datos de la slider vienen de -1 a 1
+    if(sliderData < 0)
+    {
+      // convirtiendolo a positivo
+      sliderData = (1.0 + sliderData) * -1;
+    }
+    else{
+      // 1 + 0....
+      sliderData = 1.0 + sliderData;
+    }
+    // mapeando el valor para poder pasarlo como velocidad al motor launcher
+    sliderData = sliderData / 2.0;
+    
+    return sliderData;
+  }
 }
