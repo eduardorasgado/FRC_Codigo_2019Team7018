@@ -5,54 +5,53 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-/*------------------------------------------------------------------------w----*/
-/*                        EOLOTICS 7018                                       */
-/*----------------------------------------------------------------------------*/
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+// importando todos los subsistemas
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.DifferentialDriveTrain;
+
+// Libreria para los victor spx
+import edu.wpi.first.wpilibj.VictorSP;
+
+import edu.wpi.first.wpilibj.Joystick;
 // permite controlar los tiempos de ejecucion
 import edu.wpi.first.wpilibj.Timer;
 // pasamos datos a la smartDashbard
 import edu.wpi.first.wpilibj.smartdashboard.*;
-// Se importa dentro del objeto differencialDrive, dos de ellos
-import edu.wpi.first.wpilibj.Spark;
-// permite crear un sistema diferencial para controlar los dos motores
-// que  le dan la direccion al robot
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-// controlar 2 motores izquierdos y dos derecho
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-// Libreria para los victor spx
-import edu.wpi.first.wpilibj.VictorSP;
 
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
+ * creating this project, you must also update the build.gradle file in the
+ * project.
  */
+public class Robot extends TimedRobot {
+  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  public static OI m_oi;
 
- public class Robot extends TimedRobot {
-   // Stop
-   private final double STOP_MOTOR = 0.0;
-   // Maximo Poder Del Motor
-   private final double MAX_POWER_MOTOR = 1.0;
-   //Maximo Poder Del Motor Negativo
-   private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
-   // el joystick esta en el puerto cero(USB)
+  Command m_autonomousCommand;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  // Stop
+  private final double STOP_MOTOR = 0.0;
+  // Maximo Poder Del Motor
+  private final double MAX_POWER_MOTOR = 1.0;
+  //Maximo Poder Del Motor Negativo
+  private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
+  // el joystick esta en el puerto cero(USB)
   // solo leemos las pocisiones x y "y" del mando
   private final Joystick m_stick = new Joystick(0);
   // controla los tiempos de los subsistemas
-  private final Timer m_timer = new Timer();
-
-  // puertos para el spark
-  private final int SPARK_PORT_LEFT_REAR = 0;
-  private final int SPARK_PORT_LEFT_FRONT = 1;
-
-  private final int SPARK_PORT_RIGHT_REAR = 2;
-  private final int SPARK_PORT_RIGHT_FRONT = 6;
+  //private final Timer m_timer = new Timer();
 
   // Puertos para los victor del ball Launcher
   private final int VICTOR_SP1_PORT = 4;
@@ -62,15 +61,8 @@ import edu.wpi.first.wpilibj.VictorSP;
   private final int MECANNO_MOTOR_PORT = 7;
   private final int ARM_MOTOR_PORT = 8;
 
-  // Creando los motores para el robot diferencial
-  private Spark motorRearRight;  // (LF)(LR)----(*RR)(RF)
-  private Spark motorFrontRight; // (LF)(LR)----(RR)(*RF)
-
-  private Spark motorRearLeft; // (LF)(*LR)----(RR)(RF)
-  private Spark motorFrontLeft; // (*LF)(LR)----(RR)(RF)
-
-  // creando el sistema diferencial para el robot
-  private DifferentialDrive mecanismoPrincipal;
+  // sistema principal
+  private DifferentialDriveTrain mainDrive;
 
   // los dos motores del Ball Launcher
   private VictorSP MLauncher1;
@@ -86,19 +78,13 @@ import edu.wpi.first.wpilibj.VictorSP;
    */
   @Override
   public void robotInit() {
-    // definiendo los controladores de los motores derechos
-    motorRearRight = new Spark(SPARK_PORT_RIGHT_REAR);
-    motorFrontRight = new Spark(SPARK_PORT_RIGHT_FRONT);
+    m_oi = new OI();
+    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    // chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Auto mode", m_chooser);
 
-    // definiendo los controladores de los motores izquierdos
-    motorRearLeft = new Spark(SPARK_PORT_LEFT_REAR);
-    motorFrontLeft = new Spark(SPARK_PORT_LEFT_FRONT);
-
-    // agrupando los motores
-    SpeedControllerGroup m_right = new SpeedControllerGroup(motorFrontRight, motorRearRight);
-    SpeedControllerGroup m_left = new SpeedControllerGroup(motorFrontLeft, motorRearLeft);
-    // controlador principal para el movimiento del robot
-    mecanismoPrincipal = new DifferentialDrive(m_left, m_right);
+    // el sistema de motores principal
+    mainDrive = new DifferentialDriveTrain();
 
     // Inicializando subsistemas
     // 1) Launcher
@@ -111,12 +97,57 @@ import edu.wpi.first.wpilibj.VictorSP;
   }
 
   /**
-   * This function is run once each time the robot enters autonomous mode.
+   * This function is called every robot packet, no matter the mode. Use
+   * this for items like diagnostics that you want ran during disabled,
+   * autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before
+   * LiveWindow and SmartDashboard integrated updating.
+   */
+  @Override
+  public void robotPeriodic() {
+  }
+
+  /**
+   * This function is called once each time the robot enters Disabled mode.
+   * You can use it to reset any subsystem information you want to clear when
+   * the robot is disabled.
+   */
+  @Override
+  public void disabledInit() {
+  }
+
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  /**
+   * This autonomous (along with the chooser code above) shows how to select
+   * between different autonomous modes using the dashboard. The sendable
+   * chooser code works with the Java SmartDashboard. If you prefer the
+   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+   * getString code to get the auto name from the text box below the Gyro
+   *
+   * <p>You can add additional auto modes by adding additional commands to the
+   * chooser code above (like the commented example) or additional comparisons
+   * to the switch structure below with additional strings & commands.
    */
   @Override
   public void autonomousInit() {
-    m_timer.reset();
-    m_timer.start();
+    m_autonomousCommand = m_chooser.getSelected();
+
+    /*
+     * String autoSelected = SmartDashboard.getString("Auto Selector",
+     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+     * = new MyAutoCommand(); break; case "Default Auto": default:
+     * autonomousCommand = new ExampleCommand(); break; }
+     */
+
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.start();
+    }
   }
 
   /**
@@ -124,27 +155,34 @@ import edu.wpi.first.wpilibj.VictorSP;
    */
   @Override
   public void autonomousPeriodic() {
-    
+    Scheduler.getInstance().run();
   }
 
-  /**
-   * This function is called once each time the robot enters teleoperated mode.
-   */
   @Override
   public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
   }
 
   /**
-   * This function is called periodically during teleoperated mode.
+   * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+
     while(isEnabled() && isOperatorControl())
     {
       SmartDashboard.putNumber("Joystick X", m_stick.getX());
       SmartDashboard.putNumber("Joytick Y", m_stick.getY());
-      // moviendo todo el tren de manejo
-      mecanismoPrincipal.arcadeDrive(-m_stick.getY(), m_stick.getX());
+      
+      // desde el subsistema de drive
+      mainDrive.Drive(m_stick);
 
       //boton 1: launcher: activacion
       if(m_stick.getRawButtonPressed(1))
