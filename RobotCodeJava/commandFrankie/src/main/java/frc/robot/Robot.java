@@ -18,9 +18,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DifferentialDriveTrain;
 import frc.robot.subsystems.BallSucker;
-
-// Libreria para los victor spx
-import edu.wpi.first.wpilibj.VictorSP;
+import frc.robot.subsystems.BallLauncher;
 
 import edu.wpi.first.wpilibj.Joystick;
 // permite controlar los tiempos de ejecucion
@@ -55,19 +53,13 @@ public class Robot extends TimedRobot {
   // controla los tiempos de los subsistemas
   //private final Timer m_timer = new Timer();
 
-  // Puertos para los victor del ball Launcher
-  private final int VICTOR_SP1_PORT = 4;
-  private final int VICTOR_SP2_PORT = 5;
-
   // sistema principal
   private DifferentialDriveTrain mainDrive;
 
   // El sistema para la sustraccion del cargo
   private BallSucker suckerSystem;
-
-  // los dos motores del Ball Launcher
-  private VictorSP MLauncher1;
-  private VictorSP MLauncher2;
+  // El sistema eyector de cargo
+  private BallLauncher launcherSystem;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -80,15 +72,13 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
 
+    // Iniciando subsistemas
     // el sistema de motores principal
     mainDrive = new DifferentialDriveTrain();
     // definimos el sistema sustractor
     suckerSystem = new BallSucker();
-
-    // Inicializando subsistemas
-    // 1) Launcher
-    MLauncher1 = new VictorSP(VICTOR_SP1_PORT);
-    MLauncher2 = new VictorSP(VICTOR_SP2_PORT);
+    //
+    launcherSystem = new BallLauncher();
   }
 
   /**
@@ -187,8 +177,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Button Launcher Pressed", true);
         SmartDashboard.putBoolean("Button Launcher Released", false);
         // encendiendo los motores
-        MLauncher1.set(MAX_POWER_MOTOR);
-        MLauncher2.set(MAX_POWER_MOTOR_NEGATIVE);
+        launcherSystem.DrivePressed(MAX_POWER_MOTOR, MAX_POWER_MOTOR_NEGATIVE);
       }
       //Boton 1: launcher, release
       if(m_stick.getRawButtonReleased(1))
@@ -198,8 +187,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Button Launcher Released", true);
         SmartDashboard.putBoolean("Button Launcher Pressed", false);
         // desactivamos el launcher
-        MLauncher1.set(STOP_MOTOR);
-        MLauncher2.set(STOP_MOTOR);
+        launcherSystem.DriveRelease();
       }
       // Boton2: ball Sucker-> encendiendo
       if(m_stick.getRawButtonPressed(2))
