@@ -19,10 +19,9 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DifferentialDriveTrain;
 import frc.robot.subsystems.BallSucker;
 import frc.robot.subsystems.BallLauncher;
-
-import edu.wpi.first.wpilibj.Joystick;
+//import frc.robot.OI;
 // permite controlar los tiempos de ejecucion
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 // pasamos datos a la smartDashbard
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
@@ -35,21 +34,17 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  */
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
-  public static OI m_oi;
+  private OI m_oi;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  // Stop
-  private final double STOP_MOTOR = 0.0;
+  
   // Maximo Poder Del Motor
   private final double MAX_POWER_MOTOR = 1.0;
   private final double MIN_SUCKER_MOTOR = 0.25;
   //Maximo Poder Del Motor Negativo
   private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
-  // el joystick esta en el puerto cero(USB)
-  // solo leemos las pocisiones x y "y" del mando
-  private final Joystick m_stick = new Joystick(0);
+  
   // controla los tiempos de los subsistemas
   //private final Timer m_timer = new Timer();
 
@@ -163,14 +158,14 @@ public class Robot extends TimedRobot {
 
     while(isEnabled() && isOperatorControl())
     {
-      SmartDashboard.putNumber("Joystick X", m_stick.getX());
-      SmartDashboard.putNumber("Joytick Y", m_stick.getY());
+      // enviar valores x (y) y a la smart dashboard
+      m_oi.sendPositionToDBoard();
       
       // desde el subsistema de drive
-      mainDrive.Drive(m_stick);
+      mainDrive.Drive(m_oi.m_stick);
 
       //boton 1: launcher: activacion
-      if(m_stick.getRawButtonPressed(1))
+      if(m_oi.LauncherButtonPressed())
       {
         // si el boton 0 es presionado hacer esto
         // el motor es encendido a maxima potencia
@@ -180,7 +175,7 @@ public class Robot extends TimedRobot {
         launcherSystem.DrivePressed(MAX_POWER_MOTOR, MAX_POWER_MOTOR_NEGATIVE);
       }
       //Boton 1: launcher, release
-      if(m_stick.getRawButtonReleased(1))
+      if(m_oi.LauncherButtonRelease())
       {
         // si el boton 0 es librerado hacer esto otro
         // el motor para lentamente
@@ -190,7 +185,7 @@ public class Robot extends TimedRobot {
         launcherSystem.DriveRelease();
       }
       // Boton2: ball Sucker-> encendiendo
-      if(m_stick.getRawButtonPressed(2))
+      if(m_oi.SuckerButtonPressed())
       {
         SmartDashboard.putBoolean("Button Sucker Pressed", true);
         SmartDashboard.putBoolean("Button Sucker Release", false);
@@ -198,7 +193,7 @@ public class Robot extends TimedRobot {
         // Ball Sucker
         suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
       }
-      if(m_stick.getRawButtonReleased(2))
+      if(m_oi.SuckerButtonRelease())
       {
         SmartDashboard.putBoolean("Button Sucker Release", true);
         SmartDashboard.putBoolean("Button Sucker Pressed", false);

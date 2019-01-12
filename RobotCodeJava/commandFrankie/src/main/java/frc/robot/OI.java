@@ -11,6 +11,9 @@ package frc.robot;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class OI {
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
@@ -39,4 +42,46 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+
+  // el joystick esta en el puerto cero(USB)
+  // solo leemos las pocisiones x y "y" del mando
+  private final int ACTUAL_USB_PORT = 0;
+  public Joystick m_stick;
+
+  // constructor de la clase
+  public OI()
+  {
+    // inicializador
+    m_stick = new Joystick(ACTUAL_USB_PORT);
+  }
+
+  public void sendPositionToDBoard()
+  {
+    SmartDashboard.putNumber("Joystick X", m_stick.getX());
+    SmartDashboard.putNumber("Joytick Y", m_stick.getY());
+  }
+
+  public boolean LauncherButtonPressed()
+  {
+    //
+    return m_stick.getRawButtonPressed(1);
+  }
+
+  public boolean LauncherButtonRelease()
+  {
+    //
+    return m_stick.getRawButtonReleased(1);
+  }
+
+  public boolean SuckerButtonPressed()
+  {
+    //
+    return m_stick.getRawButtonPressed(2);
+  }
+
+  public boolean SuckerButtonRelease()
+  {
+    //
+    return m_stick.getRawButtonReleased(2);
+  }
 }
