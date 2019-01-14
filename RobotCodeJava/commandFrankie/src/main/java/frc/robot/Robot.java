@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
   private final double MAX_POWER_MOTOR = 1.0;
   private final double MIN_SUCKER_MOTOR = 0.25;
   //Maximo Poder Del Motor Negativo
-  private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
+  //private final double MAX_POWER_MOTOR_NEGATIVE = -1.0;
   
   // controla los tiempos de los subsistemas
   //private final Timer m_timer = new Timer();
