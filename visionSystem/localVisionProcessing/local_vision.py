@@ -49,7 +49,26 @@ def threshold_HSV(image):
     upper_orange = (174.114124, 255, 255)
 
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    return cv2.inRange(hsv, lower_orange, upper_orange)
+    thresh = cv2.inRange(hsv, lower_orange, upper_orange)
+
+    kernel = np.ones((10,10 ), np.uint8)
+    # aplicar una agrupacion por kernel, se rechazan los
+    # menores al krnel
+    return cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+
+def findContours(image):
+    try:
+        img, contours, hier = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        cont = contours[0]
+        M = cv2.moments(cont)
+        #print(M)
+        if M:
+            print("====> [OBJETO DETECTADO]")
+
+        cv2.drawContours(image,contours, -1, (0, 0, 255), 3)
+    except Exception as e:
+        print(str("[NINGÚN OBJETO DETECTADO]"))
+    #return image
 
 def blobs(image):
     #detectando circulos para saber que existe un cargo al frente,
@@ -59,10 +78,10 @@ def blobs(image):
     params.maxThreshold = 250;
 
     params.filterByArea = True
-    params.minArea = 22.0
+    params.minArea = 300
 
     params.filterByCircularity = True
-    params.minCircularity = 0.8
+    params.minCircularity = 0.5
     params.maxCircularity = 1.0
 
     params.filterByConvexity = True
@@ -101,10 +120,13 @@ def simple_image(url):
         resized_img = resize(frame)
         blur_img = blur(resized_img)
         t_hsv = threshold_HSV(blur_img)
+        # TODO: Probar con un findContours
+        findContours(t_hsv)
         blobs_img = blobs(t_hsv)
         cv2.imshow('FRANKIE CAMERA', frame)
         cv2.imshow('BLUR IMAGE', blur_img)
         cv2.imshow('HSV ORANGE FILTER', t_hsv)
+        #cv2.imshow('CONTOURS FILTER', contours)
         cv2.imshow('CARGO DETECTOR ALGORITHM', blobs_img)
         # si presionamos esc
         if cv2.waitKey(1) == 27:
