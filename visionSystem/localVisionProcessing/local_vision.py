@@ -119,6 +119,7 @@ def simple_image(url):
         # que se pasen por enfrente del robot
         resized_img = resize(frame)
         blur_img = blur(resized_img)
+        
         t_hsv = threshold_HSV(blur_img)
         # TODO: Probar con un findContours
         findContours(t_hsv)
