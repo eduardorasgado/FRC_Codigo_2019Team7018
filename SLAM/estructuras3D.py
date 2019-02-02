@@ -2,6 +2,8 @@
 
 """
 A cartesian frame implementation
+Reference here:
+    http://archive.petercollingridge.co.uk/book/export/html/460
 """
 import pygame
 
@@ -45,7 +47,6 @@ class Estructura:
             print("{} from: {}, {}, {}"
                 .format(i, edge.start.x, edge.start.y, edge.start.z))
             print("to {}, {}, {}".format(edge.stop.x, edge.stop.y, edge.stop.z))
-
 
 
 

@@ -13,8 +13,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// Importando los comandos
+// para el sensor sharp
+import frc.robot.commands.ProximitySensorCommand;
+
 // importando todos los subsistemas
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DifferentialDriveTrain;
 import frc.robot.subsystems.BallSucker;
@@ -63,9 +66,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+
+    // configurando el comando para el modo autonomo principal
+    //m_autonomousCommand = new ProximitySensorCommand();
+
+    // opcion 1: 
+    m_chooser.setDefaultOption("Leer el sensor sharp!", new ProximitySensorCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Selecciona el autonomo :U", m_chooser);
 
     // Iniciando subsistemas
     // el sistema de motores principal
