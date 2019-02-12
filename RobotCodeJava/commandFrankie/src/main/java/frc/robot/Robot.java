@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 
 // Importando los comandos
 // para el sensor sharp
-import frc.robot.commands.ProximitySensorCommand;
+///import frc.robot.commands.ProximitySensorCommand;
+import frc.robot.commands.manualDriveCommand;
 
 // importando todos los subsistemas
 import frc.robot.subsystems.ExampleSubsystem;
@@ -71,7 +72,7 @@ public class Robot extends TimedRobot {
     //m_autonomousCommand = new ProximitySensorCommand();
 
     // opcion 1: 
-    m_chooser.setDefaultOption("Leer el sensor sharp!", new ProximitySensorCommand());
+    m_chooser.setDefaultOption("Leer el sensor sharp!", new manualDriveCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Selecciona el autonomo :U", m_chooser);
 
@@ -144,6 +145,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    mainDrive();
   }
 
   @Override
@@ -166,41 +168,7 @@ public class Robot extends TimedRobot {
 
     while(isEnabled() && isOperatorControl())
     {
-      // enviar valores x (y) y a la smart dashboard
-      m_oi.sendPositionToDBoard();
-      // los datos de el slider
-      //SmartDashboard.putNumber("SLIDER: ", m_oi.getSliderData());
-      
-      // obteniendo la velocidad del launcher con el slider
-      double sliderData = launcherSystem.getSpeed(m_oi.getSliderData());
-
-      // desde el subsistema de drive
-      mainDrive.Drive(m_oi.m_stick);
-
-      //boton 1: launcher: activacion
-      if(m_oi.LauncherButtonPressed())
-      {
-        // encendiendo los motores
-        launcherSystem.DrivePressed(sliderData, -sliderData);
-      }
-      //Boton 1: launcher, release
-      if(m_oi.LauncherButtonRelease())
-      {
-        // desactivamos el launcher
-        launcherSystem.DriveRelease();
-      }
-      // Boton2: ball Sucker-> encendiendo
-      if(m_oi.SuckerButtonPressed())
-      {
-        // enciendo el subsistema para sustraer el cargo
-        // Ball Sucker
-        suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
-      }
-      if(m_oi.SuckerButtonRelease())
-      {
-        // Apagando el subsistema para sustraer el cargo
-        suckerSystem.DriveRelease();
-      }
+      mainDrive();
     }
   }
 
@@ -209,5 +177,53 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  public void mainDrive(){
+    // enviar valores x (y) y a la smart dashboard
+    m_oi.sendPositionToDBoard();
+    // los datos de el slider
+    //SmartDashboard.putNumber("SLIDER: ", m_oi.getSliderData());
+    
+    // obteniendo la velocidad del launcher con el slider
+    double sliderData = launcherSystem.getSpeed(m_oi.getSliderData());
+
+    // desde el subsistema de drive
+    mainDrive.Drive(m_oi.m_stick);
+
+    // conseguir el eje z para el sentido del giro
+    double z_axis = m_oi.getZAxis();
+
+    //boton 2: launcher: activacion
+    if(m_oi.LauncherButtonPressed())
+    {
+      // encendiendo los motores
+      launcherSystem.DrivePressed(sliderData, -sliderData);
+    }
+    //Boton 2: launcher, release
+    if(m_oi.LauncherButtonRelease())
+    {
+      // desactivamos el launcher
+      launcherSystem.DriveRelease();
+    }
+    // Boton 1: ball Sucker-> encendiendo
+    if(m_oi.SuckerButtonPressed())
+    {
+      // enciendo el subsistema para sustraer el cargo
+      // Ball Sucker
+      if(z_axis > 0){
+        // el sentido del giro del sucker va a permitir sacar u obtener
+        // el cargo
+        suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
+      } else {
+        // sucker -> TODO: capturar el limit switcher
+        suckerSystem.DrivePressed(-MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
+      }
+    }
+    if(m_oi.SuckerButtonRelease())
+    {
+      // Apagando el subsistema para sustraer el cargo
+      suckerSystem.DriveRelease();
+    }
   }
 }

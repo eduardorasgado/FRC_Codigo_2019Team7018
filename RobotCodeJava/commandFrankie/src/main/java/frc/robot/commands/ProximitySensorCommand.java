@@ -13,10 +13,11 @@ import edu.wpi.first.wpilibj.AnalogInput;
 //import java.lang.Math;
 
 public class ProximitySensorCommand extends Command {
+  // Definimos un contenedor para el sensor
   AnalogInput sharp_input;
   double min_raw = 9999;
   double max_raw = 0;
-  double GUIDE_VALUE = 80 / 3;
+  double GUIDE_VALUE = 80 / 3; // aprox 26.6
 
   public ProximitySensorCommand() {
     // Use requires() here to declare subsystem dependencies
@@ -39,6 +40,7 @@ public class ProximitySensorCommand extends Command {
 
     double measurement = this.getSensorData();
     SmartDashboard.putNumber("SENSOR SHARP", measurement);
+    
     if(measurement > max_raw){
       // buscando el numero mas grande
       max_raw = measurement;

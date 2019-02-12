@@ -21,12 +21,13 @@ public class BallSucker extends Subsystem {
   private double STOP_MOTOR = 0.0;
 
   //Puerto para los victor del ball Sucker
+  //private final int MECANNO_MOTOR_PORT = 7;
   private final int MECANNO_MOTOR_PORT = 7;
-  private final int ARM_MOTOR_PORT = 8;
+  //private final int ARM_MOTOR_PORT = 8;
 
   // los dos motores del Ball Sucker
   private VictorSP MecSuckerMotor;
-  private VictorSP ArmSuckerMotor;
+  //private VictorSP ArmSuckerMotor;
 
   @Override
   public void initDefaultCommand() {
@@ -35,19 +36,19 @@ public class BallSucker extends Subsystem {
 
     // 2) Sucker
     MecSuckerMotor = new VictorSP(MECANNO_MOTOR_PORT);
-    ArmSuckerMotor = new VictorSP(ARM_MOTOR_PORT);
+    //ArmSuckerMotor = new VictorSP(ARM_MOTOR_PORT);
   }
 
   public void DrivePressed(double MAX_POWER_MOTOR, double MIN_POWER_MOTOR)
   {
     // cuando se presiona el boton del ball sucker
     MecSuckerMotor.set(MAX_POWER_MOTOR);
-    ArmSuckerMotor.set(MIN_POWER_MOTOR);
+    //ArmSuckerMotor.set(MIN_POWER_MOTOR);
   }
 
   public void DriveRelease()
   {
     MecSuckerMotor.set(STOP_MOTOR);
-    ArmSuckerMotor.set(STOP_MOTOR);
+    //ArmSuckerMotor.set(STOP_MOTOR);
   }
 }

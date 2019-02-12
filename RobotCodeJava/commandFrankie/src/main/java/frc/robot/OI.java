@@ -47,6 +47,8 @@ public class OI {
   // solo leemos las pocisiones x y "y" del mando
   private final int ACTUAL_USB_PORT = 0;
   public Joystick m_stick;
+  private int LAUNCHER_NUMBER = 2;
+  private int SUCKER_NUMBER = 1;
 
   // constructor de la clase
   public OI()
@@ -73,7 +75,7 @@ public class OI {
     // el motor es encendido a maxima potencia
     SmartDashboard.putBoolean("Button Launcher Pressed", true);
     SmartDashboard.putBoolean("Button Launcher Released", false);
-    return m_stick.getRawButtonPressed(1);
+    return m_stick.getRawButtonPressed(LAUNCHER_NUMBER);
   }
 
   public boolean LauncherButtonRelease()
@@ -83,20 +85,26 @@ public class OI {
     // el motor para lentamente
     SmartDashboard.putBoolean("Button Launcher Released", true);
     SmartDashboard.putBoolean("Button Launcher Pressed", false);
-    return m_stick.getRawButtonReleased(1);
+    return m_stick.getRawButtonReleased(LAUNCHER_NUMBER);
   }
 
   public boolean SuckerButtonPressed()
   {
     SmartDashboard.putBoolean("Button Sucker Pressed", true);
     SmartDashboard.putBoolean("Button Sucker Release", false);
-    return m_stick.getRawButtonPressed(2);
+    return m_stick.getRawButtonPressed(SUCKER_NUMBER);
   }
 
   public boolean SuckerButtonRelease()
   {
     SmartDashboard.putBoolean("Button Sucker Release", true);
     SmartDashboard.putBoolean("Button Sucker Pressed", false);
-    return m_stick.getRawButtonReleased(2);
+    return m_stick.getRawButtonReleased(SUCKER_NUMBER);
+  }
+
+  public double getZAxis()
+  {
+    // conseguir datos del slider
+    return m_stick.getRawAxis(2);
   }
 }
