@@ -29,6 +29,10 @@ import frc.robot.subsystems.BallLauncher;
 // pasamos datos a la smartDashbard
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
+// Para el limit switch
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Counter;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -60,6 +64,9 @@ public class Robot extends TimedRobot {
   // El sistema eyector de cargo
   private BallLauncher launcherSystem;
 
+  // limit switch
+  private DigitalInput limitSwitch;
+  Counter counter;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -83,6 +90,9 @@ public class Robot extends TimedRobot {
     suckerSystem = new BallSucker();
     //
     launcherSystem = new BallLauncher();
+
+    limitSwitch = new DigitalInput(1);
+    counter = new Counter(limitSwitch);
   }
 
   /**
@@ -194,6 +204,14 @@ public class Robot extends TimedRobot {
     // conseguir el eje z para el sentido del giro
     double z_axis = m_oi.getZAxis();
 
+    // sucker -> capturar el limit switcher
+    boolean stopmotion = false;
+    if(counter.get() > 0){
+      // 0 closed, 1 openn
+      stopmotion = true;
+      //mainDrive.DriveMax(1.0f);
+    }
+
     //boton 2: launcher: activacion
     if(m_oi.LauncherButtonPressed())
     {
@@ -214,16 +232,16 @@ public class Robot extends TimedRobot {
       if(z_axis > 0){
         // el sentido del giro del sucker va a permitir sacar u obtener
         // el cargo
-        suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
+        suckerSystem.DrivePressed(MAX_POWER_MOTOR, MIN_SUCKER_MOTOR, false);
       } else {
-        // sucker -> TODO: capturar el limit switcher
-        suckerSystem.DrivePressed(-MAX_POWER_MOTOR, MIN_SUCKER_MOTOR);
+        suckerSystem.DrivePressed(-MAX_POWER_MOTOR, MIN_SUCKER_MOTOR, stopmotion);
       }
     }
     if(m_oi.SuckerButtonRelease())
     {
       // Apagando el subsistema para sustraer el cargo
       suckerSystem.DriveRelease();
+      counter.reset();
     }
   }
 }

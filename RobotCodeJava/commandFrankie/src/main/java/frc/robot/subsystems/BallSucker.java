@@ -39,10 +39,13 @@ public class BallSucker extends Subsystem {
     //ArmSuckerMotor = new VictorSP(ARM_MOTOR_PORT);
   }
 
-  public void DrivePressed(double MAX_POWER_MOTOR, double MIN_POWER_MOTOR)
+  public void DrivePressed(double MAX_POWER_MOTOR, double MIN_POWER_MOTOR,
+    boolean stopmotion)
   {
     // cuando se presiona el boton del ball sucker
-    MecSuckerMotor.set(MAX_POWER_MOTOR);
+    if(!stopmotion){MecSuckerMotor.set(MAX_POWER_MOTOR);}
+    else {MecSuckerMotor.set(STOP_MOTOR);}
+
     //ArmSuckerMotor.set(MIN_POWER_MOTOR);
   }
 

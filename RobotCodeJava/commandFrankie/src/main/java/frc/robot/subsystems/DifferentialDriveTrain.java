@@ -65,4 +65,10 @@ public class DifferentialDriveTrain extends Subsystem {
     // moviendo todo el tren de manejo
     mecanismoPrincipal.arcadeDrive(-m_stick.getY(), m_stick.getX());
   }
+
+  public void DriveMax(float vel)
+  {
+    // moviendo todo el tren de manejo
+    mecanismoPrincipal.arcadeDrive(-1.0, 1.0);
+  }
 }
