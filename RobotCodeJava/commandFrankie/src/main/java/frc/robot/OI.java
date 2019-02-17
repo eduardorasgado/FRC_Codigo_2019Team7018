@@ -62,7 +62,7 @@ public class OI {
     SmartDashboard.putNumber("Joystick X", m_stick.getX());
     SmartDashboard.putNumber("Joytick Y", m_stick.getY());
   }
-
+  
   public double getSliderData()
   {
     // conseguir datos del slider
