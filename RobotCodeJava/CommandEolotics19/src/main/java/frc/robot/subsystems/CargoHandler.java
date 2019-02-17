@@ -27,10 +27,6 @@ public class CargoHandler extends Subsystem {
     canonArmMotor = new Spark(RobotMap.MotorCanonArm);
   }
 
-  public void moveArm(){
-    // mueve el brazo del cargo handler
-  }
-
   public void takeCargo(){
     // mecanismo de sustraccion
     // baja el brazo y succiona
@@ -48,6 +44,12 @@ public class CargoHandler extends Subsystem {
     // ubica el brazo y lanza
     moveCargoUpperMotor(false);
     moveCargoBottomMotor(false);
+  }
+
+  public void stopGripper(){
+    // para los motores upper y bottom
+    stopCargoUpperMotor();
+    stopCargoBottomMotor();
   }
 
   public void moveCargoUpperMotor(boolean negative){
