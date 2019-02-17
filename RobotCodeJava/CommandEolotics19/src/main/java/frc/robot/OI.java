@@ -39,16 +39,32 @@ public class OI {
     return mStick.getRawButtonPressed(RobotMap.LAUNCHER_BUTTON_NUMBER);
   }
 
+  public boolean canonLauncherReleased(){
+    return mStick.getRawButtonReleased(RobotMap.LAUNCHER_BUTTON_NUMBER);
+  }
+
   public boolean canonSuckerPressed(){
     return mStick.getRawButtonPressed(RobotMap.SUCKER_BUTTON_NUMBER);
+  }
+
+  public boolean canonSuckerReleased() {
+    return mStick.getRawButtonReleased(RobotMap.SUCKER_BUTTON_NUMBER);
   }
 
   public boolean button_3_Pressed(){
     return mStick.getRawButtonPressed(RobotMap.BUTTON_PORT_3);
   }
 
+  public boolean button_3_Released() {
+    return mStick.getRawButtonReleased(RobotMap.BUTTON_PORT_3);
+  }
+
   public boolean button_5_Pressed(){
     return mStick.getRawButtonPressed(RobotMap.BUTTON_PORT_5);
+  }
+
+  public boolean button_5_Released(){
+    return mStick.getRawButtonReleased(RobotMap.BUTTON_PORT_5);
   }
 
   public double getZAxis(){
@@ -63,7 +79,7 @@ public class OI {
     if(sliderData < 0)
     {
       // convirtiendolo a positivo
-      sliderData = (1.0 + sliderData) * -1;
+      sliderData = (1.0 + sliderData);
     }
     else{
       // 1 + 0....
@@ -86,12 +102,14 @@ public class OI {
 
     if(canonLauncherPressed()){
       cargoHandler.launchCargo(sliderData);
-    } else {
+    }
+    if(canonLauncherReleased()){
       cargoHandler.stopGripper();
     }
     if(canonSuckerPressed()){
       cargoHandler.takeCargo();
-    } else {
+    }
+    if(canonSuckerReleased()){
       cargoHandler.stopGripper();
     }
     if(button_3_Pressed()){

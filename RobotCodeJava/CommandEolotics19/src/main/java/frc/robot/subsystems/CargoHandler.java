@@ -27,11 +27,11 @@ public class CargoHandler extends Subsystem {
     canonArmMotor = new Spark(RobotMap.MotorCanonArm);
   }
 
-  public void takeCargo(){
+  public void launchCargo(double speed){
     // mecanismo de sustraccion
     // baja el brazo y succiona
-    moveCargoUpperMotor(true, 1.0);
-    moveCargoBottomMotor(true);
+    moveCargoUpperMotor(true, speed);
+    moveCargoBottomMotor(false);
   }
 
   public void homePosition(){
@@ -39,11 +39,11 @@ public class CargoHandler extends Subsystem {
     // el boton de succion, para el motor
   }
 
-  public void launchCargo(double speed){
+  public void takeCargo(){
     // mecanismo de lanzamiento
     // ubica el brazo y lanza
-    moveCargoUpperMotor(false, speed);
-    moveCargoBottomMotor(false);
+    moveCargoUpperMotor(false,1.0);
+    moveCargoBottomMotor(true);
   }
 
   public void stopGripper(){
@@ -58,7 +58,7 @@ public class CargoHandler extends Subsystem {
     if(negative){
       canonUpperMotor.set(-speed);
     } else {
-      canonUpperMotor.set(RobotMap.MAX_MOTOR_POWER);
+      canonUpperMotor.set(speed);
     }
   }
 
