@@ -27,9 +27,15 @@ public class CargoHandler extends Subsystem {
     canonArmMotor = new Spark(RobotMap.MotorCanonArm);
   }
 
+  public void moveArm(){
+    // mueve el brazo del cargo handler
+  }
+
   public void takeCargo(){
     // mecanismo de sustraccion
     // baja el brazo y succiona
+    moveCargoUpperMotor(true);
+    moveCargoBottomMotor(true);
   }
 
   public void homePosition(){
@@ -40,23 +46,48 @@ public class CargoHandler extends Subsystem {
   public void launchCargo(){
     // mecanismo de lanzamiento
     // ubica el brazo y lanza
+    moveCargoUpperMotor(false);
+    moveCargoBottomMotor(false);
   }
 
-  public void moveCargoUpperMotor(){
+  public void moveCargoUpperMotor(boolean negative){
     // toma una velocidad y activa el motor superior
+    if(negative){
+      canonUpperMotor.set(-RobotMap.MAX_MOTOR_POWER);
+    } else {
+      canonUpperMotor.set(RobotMap.MAX_MOTOR_POWER);
+    }
   }
 
-  public void moveCargoBottomMotor(){
+  public void moveCargoBottomMotor(boolean negative){
     // toma una velocidad y activa el motor inferior
+    if(negative){
+      canonBottomMotor.set(-RobotMap.MAX_MOTOR_POWER);
+    }
+    else{
+      canonBottomMotor.set(RobotMap.MAX_MOTOR_POWER);
+    }
+  }
+
+  public void moverArmMotor(boolean negative){
+    // mover el brazo
+    if(negative){
+      canonArmMotor.set(-RobotMap.MAX_MOTOR_POWER);
+    } else {
+      canonArmMotor.set(RobotMap.MAX_MOTOR_POWER);
+    }
   }
 
   public void stopCargoUpperMotor(){
     // para los motores del sucker/launcher superior
+    canonUpperMotor.set(RobotMap.STOP_MOTOR);
   }
   public void stopCargoBottomMotor(){
     // para el motor del sucker/launcher inferior
+    canonBottomMotor.set(RobotMap.STOP_MOTOR);
   }
   public void stopArmMotor(){
     // para el motor del brazo
+    canonArmMotor.set(RobotMap.STOP_MOTOR);
   }
 }

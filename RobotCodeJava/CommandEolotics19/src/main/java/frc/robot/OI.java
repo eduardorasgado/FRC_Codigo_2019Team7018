@@ -42,4 +42,9 @@ public class OI {
   public boolean button_5_Pressed(){
     return mStick.getRawButtonPressed(RobotMap.BUTTON_PORT_5);
   }
+
+  public void mainEventLoop(){
+    // se toman las lecturas de todos los botones para ejecutar
+    // las acciones
+  }
 }

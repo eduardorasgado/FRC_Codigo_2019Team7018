@@ -45,6 +45,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    // mandando a llamar el modo teleop en el autonomo
+    m_oi.mainEventLoop();
   }
 
   @Override
@@ -58,6 +60,10 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    while(isEnabled() && isOperatorControl()){
+      m_oi.mainEventLoop();
+    }
   }
 
   /**
