@@ -23,18 +23,29 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  // PUERTOS PARA EL DRIVE TRAIN
-  public static int MotorLeftRear = 0;
-  public static int MotorLeftFront = 1;
+  // PUERTOS PARA EL JOYSTICK O LOS CONTROLES
+  public final static int ACTUAL_USB_PORT = 0;
+  // -- botones del joystick para ejecutar acciones
+  // botones para el cargo handler
+  public final static int LAUNCHER_BUTTON_NUMBER = 2;
+  public final static int SUCKER_BUTTON_NUMBER = 1;
+  public final static int BUTTON_PORT_3 = 3;
+  public final static int BUTTON_PORT_5 = 5;
 
-  public static int MotorRightRear = 2;
-  public static int MotorRightFront = 3;
+  public final static int SLIDER_AXIS_PORT = 3;
+
+  // PUERTOS PARA EL DRIVE TRAIN
+  public final static int MotorLeftRear = 0;
+  public final static int MotorLeftFront = 1;
+
+  public final static int MotorRightRear = 2;
+  public final static int MotorRightFront = 3;
 
   // PUERTOS PARA EL CARGO HANDLER
-  public static int MotorCanonUpper = 4;
-  public static int MotorCanonBottom = 5;
+  public final static int MotorCanonUpper = 4;
+  public final static int MotorCanonBottom = 5;
 
-  public static int MotorCanonArm = 9;
+  public final static int MotorCanonArm = 9;
 
   // PUERTOS PARA EL HATCH PANEL HANDLER
 }

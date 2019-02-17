@@ -7,36 +7,39 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.RobotMap;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
+  // definimos una instancia de joystick
+  public Joystick mStick;
 
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
+  public OI(){
+    // constructor
+    mStick = new Joystick(RobotMap.ACTUAL_USB_PORT);
+  }
+  
+  public double getSliderData(){
+    return mStick.getRawAxis(RobotMap.SLIDER_AXIS_PORT);
+  }
 
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
+  public boolean canonLauncherPressed(){
+    return mStick.getRawButtonPressed(RobotMap.LAUNCHER_BUTTON_NUMBER);
+  }
 
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
+  public boolean canonSuckerPressed(){
+    return mStick.getRawButtonPressed(RobotMap.SUCKER_BUTTON_NUMBER);
+  }
 
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
+  public boolean button_3_Pressed(){
+    return mStick.getRawButtonPressed(RobotMap.BUTTON_PORT_3);
+  }
 
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
+  public boolean button_5_Pressed(){
+    return mStick.getRawButtonPressed(RobotMap.BUTTON_PORT_5);
+  }
 }
