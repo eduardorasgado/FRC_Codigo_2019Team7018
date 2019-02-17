@@ -51,6 +51,6 @@ public class RobotMap {
 
   // PARAMETROS DEL ENTORNO
   public final static double MAX_MOTOR_POWER = 1.0;
-  public final static double AVERAGE_MOTOR_POWER = 0.25;
+  public final static double AVERAGE_MOTOR_POWER = 0.39;
   public final static double STOP_MOTOR = 0.0; 
 }

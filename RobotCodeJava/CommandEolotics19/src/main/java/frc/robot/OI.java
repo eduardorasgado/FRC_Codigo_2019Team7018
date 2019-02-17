@@ -98,7 +98,7 @@ public class OI {
 
     mainDrive.Drive(mStick.getY(), mStick.getX());
 
-    double z_axis = getZAxis();
+    //double z_axis = getZAxis();
 
     if(canonLauncherPressed()){
       cargoHandler.launchCargo(sliderData);
@@ -113,16 +113,19 @@ public class OI {
       cargoHandler.stopGripper();
     }
     if(button_3_Pressed()){
-      boolean neg;
-      if(z_axis > 0){
-        // mover el sistema de brazo del cargo handler
-        neg = false;
-        cargoHandler.moverArmMotor(neg);
-      } else {
-        neg = true;
-        cargoHandler.moverArmMotor(neg);
-      }
-    } else {
+      // elevacion del arm
+      boolean neg = false;
+      cargoHandler.moverArmMotor(neg);
+    }
+    if(button_3_Released()){
+      cargoHandler.stopArmMotor();
+    }
+    if(button_5_Pressed()){
+      // con esto va hacia abajo el arm
+      boolean neg = true;
+      cargoHandler.moverArmMotor(neg);
+    }
+    if(button_5_Released()){
       cargoHandler.stopArmMotor();
     }
   }

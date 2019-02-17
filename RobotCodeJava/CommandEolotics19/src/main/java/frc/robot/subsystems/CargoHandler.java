@@ -75,7 +75,8 @@ public class CargoHandler extends Subsystem {
   public void moverArmMotor(boolean negative){
     // mover el brazo
     if(negative){
-      canonArmMotor.set(-RobotMap.MAX_MOTOR_POWER);
+      // el brazo baja
+      canonArmMotor.set(RobotMap.AVERAGE_MOTOR_POWER);
     } else {
       canonArmMotor.set(RobotMap.MAX_MOTOR_POWER);
     }
