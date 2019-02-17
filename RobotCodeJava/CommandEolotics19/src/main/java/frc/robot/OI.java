@@ -79,15 +79,20 @@ public class OI {
     // se toman las lecturas de todos los botones para ejecutar
     // las acciones
     double sliderData = getSpeed();
+
     mainDrive.Drive(mStick.getY(), mStick.getX());
 
     double z_axis = getZAxis();
 
     if(canonLauncherPressed()){
-      cargoHandler.launchCargo();
+      cargoHandler.launchCargo(sliderData);
+    } else {
+      cargoHandler.stopGripper();
     }
     if(canonSuckerPressed()){
       cargoHandler.takeCargo();
+    } else {
+      cargoHandler.stopGripper();
     }
     if(button_3_Pressed()){
       boolean neg;
@@ -99,6 +104,8 @@ public class OI {
         neg = true;
         cargoHandler.moverArmMotor(neg);
       }
+    } else {
+      cargoHandler.stopArmMotor();
     }
   }
 }

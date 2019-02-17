@@ -30,7 +30,7 @@ public class CargoHandler extends Subsystem {
   public void takeCargo(){
     // mecanismo de sustraccion
     // baja el brazo y succiona
-    moveCargoUpperMotor(true);
+    moveCargoUpperMotor(true, 1.0);
     moveCargoBottomMotor(true);
   }
 
@@ -39,10 +39,10 @@ public class CargoHandler extends Subsystem {
     // el boton de succion, para el motor
   }
 
-  public void launchCargo(){
+  public void launchCargo(double speed){
     // mecanismo de lanzamiento
     // ubica el brazo y lanza
-    moveCargoUpperMotor(false);
+    moveCargoUpperMotor(false, speed);
     moveCargoBottomMotor(false);
   }
 
@@ -52,10 +52,11 @@ public class CargoHandler extends Subsystem {
     stopCargoBottomMotor();
   }
 
-  public void moveCargoUpperMotor(boolean negative){
+  public void moveCargoUpperMotor(boolean negative,
+        double speed){
     // toma una velocidad y activa el motor superior
     if(negative){
-      canonUpperMotor.set(-RobotMap.MAX_MOTOR_POWER);
+      canonUpperMotor.set(-speed);
     } else {
       canonUpperMotor.set(RobotMap.MAX_MOTOR_POWER);
     }
