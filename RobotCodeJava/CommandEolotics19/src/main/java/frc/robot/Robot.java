@@ -12,7 +12,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-//import frc.robot.RobotMap;
 
 public class Robot extends TimedRobot {
   public static OI m_oi;

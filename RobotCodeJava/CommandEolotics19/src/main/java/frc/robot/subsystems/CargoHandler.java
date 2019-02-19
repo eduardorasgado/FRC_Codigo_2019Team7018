@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.RobotMap;
 
 public class CargoHandler extends Subsystem {
@@ -16,7 +17,7 @@ public class CargoHandler extends Subsystem {
   private Spark canonUpperMotor; // motor arriba
   private Spark canonBottomMotor; // moyot de abajo
   // definiendo el motor para el canon arm
-  private Spark canonArmMotor;
+  private VictorSP canonArmMotor;
 
   @Override
   public void initDefaultCommand() {
@@ -24,7 +25,7 @@ public class CargoHandler extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
     canonUpperMotor = new Spark(RobotMap.MotorCanonUpper);
     canonBottomMotor = new Spark(RobotMap.MotorCanonBottom);
-    canonArmMotor = new Spark(RobotMap.MotorCanonArm);
+    canonArmMotor = new VictorSP(RobotMap.MotorCanonArm);
   }
 
   public void launchCargo(double speed){
