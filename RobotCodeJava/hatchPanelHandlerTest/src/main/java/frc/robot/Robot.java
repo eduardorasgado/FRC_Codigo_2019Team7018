@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
 
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.HatchPanelHandler;
+//import frc.robot.subsystems.HatchPanelHandler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
 
   // sistema de hatch panel(solenoides)
-  public static final HatchPanelHandler solenoidSubsystem = new HatchPanelHandler();
+  //public static final HatchPanelHandler solenoidSubsystem = new HatchPanelHandler();
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -125,6 +125,10 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    while(isEnabled() && isOperatorControl())
+    {
+      m_oi.mainLoop();
+    }
   }
 
   /**
@@ -132,6 +136,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    m_oi.mainLoop();
+    
   }
 }

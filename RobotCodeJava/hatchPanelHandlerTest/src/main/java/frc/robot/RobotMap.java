@@ -24,10 +24,13 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  public static int joystick_port = 0;
-  public static int explode_button = 1;
-  public static int implode_button = 2;
+  public final static int joystick_port = 0;
+  public final static int explode_button = 1;
+  public final static int implode_button = 2;
 
-  public static int solenoidLeft = 1;
-  public static int solenoidRight = 0;
+  public final static int solenoidLeft = 1;
+  public final static int solenoidRight = 0;
+
+  // motor 
+  public final static int motor_port = 5;
 }

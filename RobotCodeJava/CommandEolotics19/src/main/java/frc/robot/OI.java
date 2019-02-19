@@ -107,7 +107,7 @@ public class OI {
       cargoHandler.stopGripper();
     }
     if(canonSuckerPressed()){
-      cargoHandler.takeCargo();
+      cargoHandler.takeCargo(sliderData);
     }
     if(canonSuckerReleased()){
       cargoHandler.stopGripper();

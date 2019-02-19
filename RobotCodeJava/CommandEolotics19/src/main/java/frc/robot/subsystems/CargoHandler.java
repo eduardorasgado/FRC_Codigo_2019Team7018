@@ -40,10 +40,10 @@ public class CargoHandler extends Subsystem {
     // el boton de succion, para el motor
   }
 
-  public void takeCargo(){
+  public void takeCargo(double speed){
     // mecanismo de lanzamiento
     // ubica el brazo y lanza
-    moveCargoUpperMotor(false,1.0);
+    moveCargoUpperMotor(false,speed);
     moveCargoBottomMotor(true);
   }
 
