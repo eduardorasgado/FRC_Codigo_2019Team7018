@@ -16,7 +16,7 @@ public class SolenoidOperation extends Command {
   // usando el objeto subsystem creado en el Robot
   HatchPanelHandler subsystem = Robot.solenoidSubsystem;
 
-  Direction direction;
+  public Direction direction;
 
   public static enum Direction {
     FORWARD,
