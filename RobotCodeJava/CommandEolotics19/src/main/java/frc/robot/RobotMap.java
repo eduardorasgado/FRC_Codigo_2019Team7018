@@ -54,6 +54,7 @@ public class RobotMap {
 
   public final static int solenoidLeft = 1;
   public final static int solenoidRight = 0;
+  public final static int hatchElevator = 3;
 
   // COMPRESSOR
   //public final static int compressor_button = 9;

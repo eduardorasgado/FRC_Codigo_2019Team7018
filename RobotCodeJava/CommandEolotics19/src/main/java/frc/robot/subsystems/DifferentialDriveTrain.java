@@ -46,6 +46,6 @@ public class DifferentialDriveTrain extends Subsystem {
 
   public void Drive(double ySpeed, double xSpeed){
     // tomando los datos de traslacion del joystick
-    mecanismoPrincipal.arcadeDrive(-ySpeed, xSpeed);
+    mecanismoPrincipal.arcadeDrive(-ySpeed, xSpeed*0.74);
   }
 }

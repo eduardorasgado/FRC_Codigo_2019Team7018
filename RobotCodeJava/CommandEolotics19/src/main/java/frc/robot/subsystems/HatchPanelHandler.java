@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -16,12 +17,14 @@ public class HatchPanelHandler extends Subsystem {
   
   // el par de valvulas en el solenoide
   private DoubleSolenoid solenoidPair = null;
+  private Spark cascade = null;
 
   @Override
   public void initDefaultCommand() {
     // asignando cada puerto del pcm a el par solenoide
     solenoidPair = new DoubleSolenoid(RobotMap.solenoidRight,
                     RobotMap.solenoidLeft);
+    cascade = new Spark(RobotMap.hatchElevator);
   }
   public void explodeHatch(){
     // expulsar el hatch panel
@@ -36,5 +39,17 @@ public class HatchPanelHandler extends Subsystem {
   public void stopSolenoid(){
     //
     solenoidPair.set(Value.kOff);
+  }
+
+  public void hatchUp(){
+    cascade.set(0.4);
+  }
+
+  public void hatchDown(){
+    cascade.set(-0.4);
+  }
+
+  public void cascadeStop(){
+    cascade.set(0.0);
   }
 }

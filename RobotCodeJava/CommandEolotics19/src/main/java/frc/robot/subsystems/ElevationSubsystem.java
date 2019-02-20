@@ -15,10 +15,10 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class ElevationSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+  // para los sistemas de elevacion del habitat
   private Spark actuatorFront;
   private Spark actuatorRear;
+  // para los sistemas de elevacion del hatch panel hndler  
 
   @Override
   public void initDefaultCommand() {

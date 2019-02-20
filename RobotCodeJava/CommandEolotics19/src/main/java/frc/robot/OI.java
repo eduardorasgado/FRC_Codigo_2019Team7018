@@ -163,6 +163,20 @@ public class OI {
       //s_op.direction = SolenoidOperation.Direction.STOP;
       hp_handler.stopSolenoid();
     }
+
+    // el sistema de elevacion de el solenoide
+    if(xControl.getRawButtonPressed(4)){
+      hp_handler.hatchUp();
+    }
+    if(xControl.getRawButtonReleased(4)){
+      hp_handler.cascadeStop();
+    }
+    if(xControl.getRawButtonPressed(5)){
+      hp_handler.hatchDown();
+    }
+    if(xControl.getRawButtonReleased(5)){
+      hp_handler.cascadeStop();
+    }
   }
 
   public void readingElevatorButtons(){
