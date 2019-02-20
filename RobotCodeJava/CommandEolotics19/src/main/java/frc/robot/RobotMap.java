@@ -25,6 +25,7 @@ public class RobotMap {
 
   // PUERTOS PARA EL JOYSTICK O LOS CONTROLES
   public final static int ACTUAL_USB_PORT = 0;
+  public final static int ACTUAL_XBOX_USB_PORT = 1;
   // -- botones del joystick para ejecutar acciones
   // botones para el cargo handler
   public final static int LAUNCHER_BUTTON_NUMBER = 2;
@@ -48,9 +49,21 @@ public class RobotMap {
   public final static int MotorCanonArm = 9;
 
   // PUERTOS PARA EL HATCH PANEL HANDLER
+  public final static int explode_button = 11;
+  public final static int implode_button = 12;
+
+  public final static int solenoidLeft = 1;
+  public final static int solenoidRight = 0;
+
+  // COMPRESSOR
+  //public final static int compressor_button = 9;
 
   // PARAMETROS DEL ENTORNO
   public final static double MAX_MOTOR_POWER = 1.0;
   public final static double AVERAGE_MOTOR_POWER = 0.39;
-  public final static double STOP_MOTOR = 0.0; 
+  public final static double STOP_MOTOR = 0.0;
+
+  // Puertos de los Spark
+  public final static int ActuatorRear = 7;
+  public final static int ActuatorFront = 8;
 }
